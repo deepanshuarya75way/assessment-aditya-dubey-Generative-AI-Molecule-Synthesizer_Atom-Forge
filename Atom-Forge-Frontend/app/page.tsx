@@ -526,74 +526,72 @@ export default function Home() {
         .af-space { height: 20px; }
         .af-mol-cards-space { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
 
-        
-      `
-      {/* FEEDBACK SECTION */}
-<div className="af-feedback">
-  <h3>Feedback for this molecule</h3>
+        .af-feedback {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 229, 255, 0.18);
+}
 
-  <p className="af-feedback-subtitle">
-    How would you rate this molecule?
-  </p>
+.af-feedback h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+}
 
-  <div className="af-rating">
-    {[1, 2, 3, 4, 5].map((rating) => (
-      <button
-        key={rating}
-        type="button"
-        className={
-          (feedback[idx]?.rating || 0) >= rating
-            ? "af-star af-star-active"
-            : "af-star"
-        }
-        onClick={() =>
-          setFeedback((prev) => ({
-            ...prev,
-            [idx]: {
-              rating,
-              comment: prev[idx]?.comment || "",
-            },
-          }))
-        }
-        aria-label={`${rating} out of 5 stars`}
-      >
-        ★
-      </button>
-    ))}
-  </div>
+.af-feedback-subtitle {
+  font-size: 12px;
+  color: rgba(208, 238, 247, 0.55);
+  margin-bottom: 12px;
+}
 
-  <label className="af-label" htmlFor={`feedback-${idx}`}>
-    Your comments
-  </label>
+.af-rating {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
 
-  <textarea
-    id={`feedback-${idx}`}
-    className="af-feedback-input"
-    placeholder="Share your thoughts about this molecule..."
-    rows={3}
-    value={feedback[idx]?.comment || ""}
-    onChange={(e) =>
-      setFeedback((prev) => ({
-        ...prev,
-        [idx]: {
-          rating: prev[idx]?.rating || 0,
-          comment: e.target.value,
-        },
-      }))
-    }
-  />
+.af-star {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  font-size: 23px;
+  cursor: pointer;
+}
 
-  <button
-    type="button"
-    className="af-feedback-submit"
-    onClick={() => handleFeedbackSubmit(idx)}
-  >
-    Submit Feedback
-  </button>
-</div>
-{/* END FEEDBACK SECTION */}
-      
-      }</style>
+.af-star-active {
+  color: #fbbf24;
+  border-color: #fbbf24;
+}
+
+.af-feedback-input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 10px;
+  color: #d0eef7;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.af-feedback-submit {
+  padding: 11px 18px;
+  background: #0f766e;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.af-feedback-submit:hover {
+  background: #115e59;
+}
+      ` } </style>
 
       <div className="af-root">
         <div className="af-grid" />
