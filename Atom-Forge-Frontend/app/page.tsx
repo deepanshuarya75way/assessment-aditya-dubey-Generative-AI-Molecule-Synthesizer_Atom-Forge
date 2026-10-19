@@ -3,6 +3,11 @@
 import { useState, useEffect } from "react";
 import MolViewer from "@/components/MolViewer";
 
+type Feedback = {
+  rating: number;
+  comment: string;
+};
+
 type Molecule = {
   systematic_name?: string;
   chemical_name?: string;
@@ -57,6 +62,9 @@ export default function Home() {
   const [molecules, setMolecules]           = useState<Molecule[]>([]);
   const [loading, setLoading]               = useState(false);
   const [view3D, setView3D]                 = useState<Record<number, boolean>>({});
+  const [feedback, setFeedback] = useState<
+  Record<number, Feedback>
+>({});
 
   useEffect(() => {}, []);
   useEffect(() => {
@@ -101,7 +109,20 @@ export default function Home() {
       setLoading(false);
     }
   };
+ const handleFeedbackSubmit = (index: number) => {
+  const moleculeFeedback = feedback[index];
 
+  if (!moleculeFeedback || moleculeFeedback.rating === 0) {
+    alert("Please select a rating first.");
+    return;
+  }
+
+  console.log("Molecule:", molecules[index].smiles);
+  console.log("Rating:", moleculeFeedback.rating);
+  console.log("Comment:", moleculeFeedback.comment);
+
+  alert("Feedback submitted successfully!");
+};
   return (
     <>
       <style>{`
@@ -504,7 +525,75 @@ export default function Home() {
         .af-input-row { display: flex; gap: 8px; }
         .af-space { height: 20px; }
         .af-mol-cards-space { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
-      `}</style>
+
+        
+      `
+      {/* FEEDBACK SECTION */}
+<div className="af-feedback">
+  <h3>Feedback for this molecule</h3>
+
+  <p className="af-feedback-subtitle">
+    How would you rate this molecule?
+  </p>
+
+  <div className="af-rating">
+    {[1, 2, 3, 4, 5].map((rating) => (
+      <button
+        key={rating}
+        type="button"
+        className={
+          (feedback[idx]?.rating || 0) >= rating
+            ? "af-star af-star-active"
+            : "af-star"
+        }
+        onClick={() =>
+          setFeedback((prev) => ({
+            ...prev,
+            [idx]: {
+              rating,
+              comment: prev[idx]?.comment || "",
+            },
+          }))
+        }
+        aria-label={`${rating} out of 5 stars`}
+      >
+        ★
+      </button>
+    ))}
+  </div>
+
+  <label className="af-label" htmlFor={`feedback-${idx}`}>
+    Your comments
+  </label>
+
+  <textarea
+    id={`feedback-${idx}`}
+    className="af-feedback-input"
+    placeholder="Share your thoughts about this molecule..."
+    rows={3}
+    value={feedback[idx]?.comment || ""}
+    onChange={(e) =>
+      setFeedback((prev) => ({
+        ...prev,
+        [idx]: {
+          rating: prev[idx]?.rating || 0,
+          comment: e.target.value,
+        },
+      }))
+    }
+  />
+
+  <button
+    type="button"
+    className="af-feedback-submit"
+    onClick={() => handleFeedbackSubmit(idx)}
+  >
+    Submit Feedback
+  </button>
+</div>
+{/* END FEEDBACK SECTION */}
+      
+      }</style>
 
       <div className="af-root">
         <div className="af-grid" />
@@ -747,6 +836,70 @@ export default function Home() {
                           <div className="af-metric">
                             <p className="af-metric-lbl">Property</p>
                             <p className="af-metric-val">{m.selected_property || targetProperty}</p>
+                            {/* FEEDBACK SECTION */}
+<div className="af-feedback">
+  <h3>Feedback for this molecule</h3>
+
+  <p className="af-feedback-subtitle">
+    How would you rate this molecule?
+  </p>
+
+  <div className="af-rating">
+    {[1, 2, 3, 4, 5].map((rating) => (
+      <button
+        key={rating}
+        type="button"
+        className={
+          (feedback[idx]?.rating || 0) >= rating
+            ? "af-star af-star-active"
+            : "af-star"
+        }
+        onClick={() =>
+          setFeedback((prev) => ({
+            ...prev,
+            [idx]: {
+              rating,
+              comment: prev[idx]?.comment || "",
+            },
+          }))
+        }
+        aria-label={`${rating} out of 5 stars`}
+      >
+        ★
+      </button>
+    ))}
+  </div>
+
+  <label className="af-label" htmlFor={`feedback-${idx}`}>
+    Your comments
+  </label>
+
+  <textarea
+    id={`feedback-${idx}`}
+    className="af-feedback-input"
+    placeholder="Share your thoughts about this molecule..."
+    rows={3}
+    value={feedback[idx]?.comment || ""}
+    onChange={(e) =>
+      setFeedback((prev) => ({
+        ...prev,
+        [idx]: {
+          rating: prev[idx]?.rating || 0,
+          comment: e.target.value,
+        },
+      }))
+    }
+  />
+
+  <button
+    type="button"
+    className="af-feedback-submit"
+    onClick={() => handleFeedbackSubmit(idx)}
+  >
+    Submit Feedback
+  </button>
+</div>
+{/* END FEEDBACK SECTION */}
                           </div>
                           <div className="af-metric">
                             <p className="af-metric-lbl">Value</p>
