@@ -26,10 +26,13 @@ httpx
 
 # for iupac naming
 openbabel-wheel
-cirpy pubchempy
+cirpy
+
+PubChemPy
+
 
 numpy==1.26.4
-rdkit-pypi
+#rdkit-pypi
 selfies
 scikit-learn==1.6.1
 joblib
